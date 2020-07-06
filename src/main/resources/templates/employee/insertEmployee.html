@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>従業員登録システム</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" >
+<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}" >
+2
+
+1
+2
+3
+4
+5
+6
+7
+<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+</head>
+<body>
+    <div class="container">
+		<!-- 上余白 -->
+		<div class="row">
+			<div class="col-lg-offset-0 col-lg-6 col-md-8 col-sm-10 col-xs-12">
+				<img src="../../static/img/header_logo.png" th:src="@{/img/header_logo.png}">
+			</div>
+		</div>
+		<!-- login form -->
+		<div class="row">
+			<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+				<!-- 背景をグレーに、埋め込んだようなコンポーネント -->
+				<div class="well">
+
+				
+<!-- ここから上を編集する必要はありません -->
+
+<!-- ここにモックのform要素を貼り付けます -->
+
+					<form method="post" action="login.html" th:action="@{/employee/addEmp}" th:object="${insertEmployeeForm}"　enctype="multipart/form-data">
+						<fieldset>
+							<legend>従業員登録<br>(システムにログインできる管理者を登録します)</legend>
+							<!-- 氏名 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="name">
+											氏名:
+										</label>
+										<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages">
+											氏名を入力してください
+										</label>
+										<input type="text" name="name" id="name" class="form-control" placeholder="山田太郎"
+											 th:field="*{name}" th:errorclass="error-input" value="山田太郎">
+									</div>
+								</div>
+							</div>
+							<!-- 画面 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="image">
+											画像:
+										</label>
+										<label th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="error-messages">
+											画像を入力してください
+										</label>
+                                        <input type="file" name="multipartFile">
+									</div>
+								</div>
+							</div>
+							<!-- 性別 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="gender">
+											性別:
+										</label>
+										<label th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error-messages">
+											性別を選択してください
+                                        </label>
+                                        <span th:each="gender:${genderMap}" th:field="*{gender}">
+                                            <input type="radio" name="gender" th:value="${gender.key}" th:text="${gender.value}">
+                                        </span>
+										<!-- <input type="text" name="name" id="name" class="form-control" placeholder="山田太郎"
+											 th:field="*{name}" th:errorclass="error-input" value="山田太郎"> -->
+									</div>
+								</div>
+							</div>
+							<!-- 入社日 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="name">
+											入社日:
+										</label>
+										<label th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="error-messages">
+										    入社年を入力してください
+										</label>
+										<input type="text" name="year" id="year" class="form-control" placeholder="--年"
+											 th:field="*{year}" th:errorclass="error-input" value="2000">
+										<label th:if="${#fields.hasErrors('month')}" th:errors="*{month}" class="error-messages">
+										    入社月を入力してください
+										</label>
+										<input type="text" name="month" id="month" class="form-control" placeholder="--月"
+											 th:field="*{month}" th:errorclass="error-input" value="4">
+										<label th:if="${#fields.hasErrors('day')}" th:errors="*{day}" class="error-messages">
+										    入社日を入力してください
+										</label>
+										<input type="text" name="day" id="day" class="form-control" placeholder="--日"
+											 th:field="*{day}"th:errorclass="error-input" value="1">
+									</div>
+								</div>
+							</div>
+                            <!-- メールアドレス -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="mailAddress">
+                                            メールアドレス:
+                                        </label>
+                                        <label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
+                                            メールアドレスを入力してください
+                                        </label>
+                                        <span th:text="${errorMessage}" style="color:red"></span>
+                                        <input type="text" name="mailAddress" id="mailAddress" class="form-control" placeholder="yamada@mail.com"
+                                        th:field="*{mailAddress}" th:errorclass="error-input" value="yamada@mail.com">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 郵便番号 -->
+                            <div class="h-adr">
+                                <span class="p-country-name" style="display:none;">Japan</span>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label for="zipCode">
+                                                郵便番号:
+                                        </label>
+                                        <label th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}" class="error-messages">
+                                            郵便番号を入力してください
+                                        </label>
+                                        <input type="text" name="zipCode" id="zipCode" class="form-control p-postal-code" placeholder="郵便番号"
+                                        size="7" maxlength="7"　th:field="*{zipCode}" th:errorclass="error-input">
+                                    </div>
+                                    
+                                </div>
+                            </div>
+							
+							<!-- 住所 -->
+							<div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="address1">
+                                            住所1:
+                                            
+										</label>
+										<label th:if="${#fields.hasErrors('address1')}" th:errors="*{address1}" class="error-messages">
+                                            住所を入力してください
+										</label>
+                                        <input type="text" name="address1" id="address1" class="form-control p-region p-locality p-street-address p-extended-address" 
+                                        placeholder="住所" th:field="*{address1}" th:errorclass="error-input" value="xxxxxxxx" size="60">
+                                        <label for="address1">
+                                            住所2:
+                                            
+										</label>
+										<label th:if="${#fields.hasErrors('address2')}" th:errors="*{address2}" class="error-messages">
+                                            住所を入力してください
+										</label>
+                                        <input type="text" name="address2" id="address2" class="form-control"
+                                        placeholder="住所" th:field="*{address2}" th:errorclass="error-input" value="xxxxxxxx" size="60">
+									</div>
+								</div>
+							</div>
+                        </div>
+							<!-- 電話番号 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="telephone">
+											電話番号:
+										</label>
+										<label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="error-messages">
+											電話番号を入力してください
+										</label>
+										<input type="text" name="telephone" id="telephone" class="form-control" placeholder="telephone"
+											 th:field="*{telephone}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+									
+								</div>
+							</div>
+							<!-- 給料 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="salary">
+											給料:
+										</label>
+										<label th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}" class="error-messages">
+											給料を入力してください
+										</label>
+										<input type="text" name="salary" id="salary" class="form-control" placeholder="salary"
+											 th:field="*{salary}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
+							<!-- 特性 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="characteristics">
+											特性:
+										</label>
+										<label th:if="${#fields.hasErrors('characteristics')}" th:errors="*{checkPassword}" class="error-messages">
+											特性を入力してください
+										</label>
+										<textarea name="characteristics" id="characteristics" class="form-control" placeholder="characteristics"
+											 th:field="*{characteristics}" th:errorclass="error-input" value="xxxxxxxx"></textarea>
+									</div>
+								</div>
+							</div>
+							<!-- 扶養人数 -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="dependentsCount">
+											扶養人数:
+										</label>
+										<label th:if="${#fields.hasErrors('dependentsCount')}" th:errors="*{dependentsCount}" class="error-messages">
+											扶養人数を入力してください
+										</label>
+										<input type="text" name="dependentsCount" id="dependentsCount" class="form-control" placeholder="dependentsCount"
+											 th:field="*{dependentsCount}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
+							<!-- 登録ボタン -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<button type="submit" class="btn btn-primary">登録</button>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+
+
+
+<!-- ここから下を編集する必要はありません -->
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- end container -->
+   
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="../../static/js/bootstrap.min.js"></script>
+</body>
+</html>

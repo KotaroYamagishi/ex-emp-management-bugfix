@@ -1,6 +1,7 @@
 package jp.co.sample.emp_management.repository;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -50,7 +51,7 @@ public class EmployeeRepository {
 	 * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
 	 */
 	public List<Employee> findAll() {
-		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees";
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees ORDER BY hire_date";
 
 		List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
 
@@ -82,5 +83,24 @@ public class EmployeeRepository {
 
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
+	}
+
+	public void insert(Employee employee){
+		String insertsql = "INSERT INTO employees (id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) "
+		+"values(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
+
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		template.update(insertsql, param);
+	}
+
+	// nameを受け取り曖昧検索を行います
+	public List<Employee> findByName(String name){
+		String sql="SELECT * FROM employees WHERE name LIKE :name ORDER BY hire_date";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name","%"+name+"%");
+		List<Employee> result = template.query(sql,param,EMPLOYEE_ROW_MAPPER);
+		if(Objects.isNull(result)){
+			return null;
+		}
+		return result;
 	}
 }

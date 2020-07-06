@@ -38,9 +38,10 @@
 					id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員管理</a></li>
+						<li class="active"><a href="list.html" th:href="@{/employee/insertEmp}">従業員登録</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-						<span th:text="${administratorName}">山田太郎</span>さんこんにちは！
+						<span th:text="${session.administratorName}">山田太郎</span>さんこんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/logout}">ログアウト</a>
 					</p>
@@ -64,6 +65,17 @@
 
 <!-- ここにモックのtable要素を貼り付けます -->
 
+				<form th:action="@{/employee/showList}" method="post">
+					<input type="text" list="autocomplete" name="name"><br>
+					<datalist id="autocomplete">
+						<span th:each="serachName:${serachList}">
+							<option th:value="${serachName}"></option>
+						</span>
+					</datalist>
+					<button>検索</button>
+				</form> 
+
+				<span th:text="${errorMessage}" style="color:red"></span>
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -90,6 +102,13 @@
 				</table>
 
 
+
+				<link type="text/css" rel="stylesheet"
+  href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.min.css" />
+<script type="text/javascript"
+  src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript"
+  src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 <!-- ここから下を編集する必要はありません -->
 
 			</div>

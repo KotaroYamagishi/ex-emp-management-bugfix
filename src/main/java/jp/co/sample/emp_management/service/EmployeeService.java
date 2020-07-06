@@ -3,6 +3,7 @@ package jp.co.sample.emp_management.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,5 +52,20 @@ public class EmployeeService {
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+
+	public List<Employee> findByName(String name){
+		List<Employee> employeeList =employeeRepository.findByName(name);
+		return employeeList;
+	}
+
+	public void insert(Employee employee){
+		employeeRepository.insert(employee);
+	}
+
+	// employeeテーブルの要素数を取得してそれより＋1したIDを取得する
+	synchronized public int findId(){
+		int id=employeeRepository.findAll().size()+1;
+		return id;
 	}
 }
