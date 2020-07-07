@@ -3,10 +3,10 @@ package jp.co.sample.emp_management.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,6 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -143,9 +142,9 @@ public class EmployeeController {
 		Employee employee = new Employee();
 		
 		try{
-			File newFileName = new File(multipartFile.getName());
-			
-			String uploadPath="src/main/static/img";
+			File newFileName = new File(multipartFile.getOriginalFilename());
+			System.out.println(newFileName);
+			String uploadPath="src/main/resources/static/img/";
 			byte[] bytes=multipartFile.getBytes();
 			
 			BufferedOutputStream stream = new BufferedOutputStream( new FileOutputStream(new File(uploadPath+newFileName)));
