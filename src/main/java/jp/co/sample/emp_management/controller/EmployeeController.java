@@ -3,7 +3,7 @@ package jp.co.sample.emp_management.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -143,7 +143,7 @@ public class EmployeeController {
 		Employee employee = new Employee();
 		
 		try{
-			File newFileName = new File(multipartFile.getOriginalFilename());
+			File newFileName = new File(multipartFile.getName());
 			
 			String uploadPath="src/main/static/img";
 			byte[] bytes=multipartFile.getBytes();
@@ -152,7 +152,7 @@ public class EmployeeController {
 			stream.write(bytes);
 			stream.close();
 
-			String str=FileUtils.readFileToString(newFileName);
+			employee.setImage(newFileName.toString());
 		}catch(Exception e){
 			System.err.println("error");
 		}
